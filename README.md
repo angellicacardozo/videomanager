@@ -42,6 +42,12 @@ Logo, nossos candidatos são:
 
 Como o objetivo do nosso trabalho é exibir vídeos e gerenciar a execução daqueles que fogem do campo de visão de um usuário, vamos focar nos dois primeiros componentes.
 
+Com base na orientação [(Style Y163)](https://github.com/johnpapa/angular-styleguide/tree/master/a1#style-y163) , propomos o módulo *videos* para agrupar os serviços, controladores e visões da *feature* de vídeos das figuras 1 e 2.
+
+Em seguida, com base na orientação [(Style Y164)](https://github.com/johnpapa/angular-styleguide/tree/master/a1#style-y164) propomos uma diretiva global para a detecção dos eventos associados ao scroll, uma vez que este será um serviço comum aos diferentes itens de vídeos.
+
+O diretório da aplicação deve ter uma estrutura similar a abaixo:
+
 ```
 utils
     /directives

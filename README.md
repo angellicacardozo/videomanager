@@ -4,9 +4,9 @@
 
 Modelar a arquitetura de um elemento de interface que execute vídeos, em uma página web. O elemento de interface deve reagir à alguns eventos provocados pelo usuário final, tal como o scroll da página web. Nos casos em que o usuário realize o scroll sobre a página e o elemento de vídeo, o qual ele tenha iniciado uma execução, saia da perspectiva de visão, esse deve ser fixado em algum quadrante da tela.
 
-[Figura 1 : Representação visual da proposta dos elementos de interface](images/fig1.png)
+![Figura 1 : Representação visual da proposta dos elementos de interface](images/fig1.png " Figura 1 : Representação visual da proposta dos elementos de interface")
 
-[Figura 2 : Representação visual da gerência de vídeo em detecção de scroll](images/fig2.png)
+![Figura 2 : Representação visual da gerência de vídeo em detecção de scroll](images/fig2.png " Figura 2 : Representação visual da gerência de vídeo em detecção de scroll")
 
 ## Formalização
 
@@ -71,6 +71,58 @@ videos
 
 **template-video-manager.html** : estrutura html para suporte à diretiva **video-manager.directive.js** na visualização do modal de vídeo, de acordo com deteção do scroll.
 
+**Video Manager Directive**
+
+```
+/**
+** video-manager.directive.js
+**
+** @description diretiva responsável por reunir os elementos video-item em uma tela e coordenar o estado de visão daquele que estiver em execução de acordo com a detecção do scroll.
+**/
+(function(){
+'use strict';
+
+angular
+	.module('app.videos')
+	.directive('videoManager', videoManager);
+
+function videoManager() {
+
+	var ddo={
+		scope: {
+			/// ...
+		},
+		restrict:'E',
+		controller: VideoManagerController,
+		replace: true,
+		templateUrl:'app/videos/views/template-video-manager.html'
+	}
+
+	return ddo;
+
+	///
+
+	function VideoManagerController($scope, $attrs) {
+		$watch('video-item--added-on-page', function(video) {
+				// mapear videos adicionados em uma lista de execução
+		});
+
+    $watch('video-item--removed-from-page', function(video) {
+				// remover video da lista de execução
+		});
+
+    $watch('video-item--out-of-view', function(video) {
+        // carrega dados do video no template do manager
+    });
+	}
+
+  /// ... more code
+}
+})();
+```
+
+**Video Item Directive**
+
 ```
 /**
 ** video-item.directive.js
@@ -104,15 +156,25 @@ function videoItem() {
 
 		isPlaying = false;
 
+    $emit('video-item--added-on-page', $scope.video);
+
 		$watch('click', function(change) {
 					if (isPlaying) {
-              $emit('video-item--play', $scope.video);
-          } else {
-              $emit('video-item--stop', $scope.video);
-          }
+							$emit('video-item--play', $scope.video);
+					} else {
+							$emit('video-item--stop', $scope.video);
+					}
 
-          isPlaying = !isPlaying;
+					isPlaying = !isPlaying;
 		});
+	}
+
+	function _onDetectedScroll(out_of_view) {
+
+		if (out_of_view) {
+      $emit('video-item--out-of-view', $scope.video);
+		}
+
 	}
 
   /// ... more code

@@ -1,11 +1,12 @@
-# videomanager
+# Video Manager
 
-Objetivo
+## Objetivo
 
 Modelar a arquitetura de um elemento de interface que execute vídeos, em uma página web. O elemento de interface deve reagir à alguns eventos provocados pelo usuário final, tal como o scroll da página web. Nos casos em que o usuário realize o scroll sobre a página e o elemento de vídeo, o qual ele tenha iniciado uma execução, saia da perspectiva de visão, esse deve ser fixado em algum quadrante da tela.
 
+[Figura 1 : Representação visual da proposta dos elementos de interface](images/fig1)
 
-Formalização
+## Formalização
 
 Quando trabalhamos com aplicações em JavaScript, devemos ter em mente que o planejamento acerca da arquitetura costuma nos tomar mais tempo do que imaginamos, principalmente quando queremos modelar os itens mais relevantes.
 
@@ -18,11 +19,11 @@ Escolher e definir padrões de projeto nos permite dividir partes de nossa aplic
 
 Portanto, quando trabalhamos no desenvolvimento e manutenção de aplicações robustas em JavaScript, devemos tem em mente as seguintes qualidades para nosso código: sustentável, extensível, flexível e reutilizável.
 
-Metodologia
+## Metodologia
 
 Nesta fase apresentamos alguns detalhes de uma arquitetura para os componentes de interface apresentados anteriormente em **Objetivo**, bem como as trocas de estados durante detecção de scroll.
 
-Angular
+### Angular
 
 A organização lógica dos componentes nos permite visualizar os elementos potencialmente agrupáveis. Quando trabalhamos com o Angular, por exemplo, esses grupos podem ser reunidos em diretivas.
 
@@ -38,8 +39,6 @@ Logo, nossos candidatos são:
 - Componentes para agrupar vídeos em diferentes listas
 
 Como o objetivo do nosso trabalho é exibir vídeos e gerenciar a execução daqueles que fogem do campo de visão de um usuário, vamos focar nos dois primeiros componentes.
-
-
 
 ```
 utils

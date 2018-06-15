@@ -57,8 +57,8 @@ videos
         - video-item.directive.js
         - video-manager.directive.js
     /views
-        - video-item.html
-        - video-manager.html
+        - template-video-item.html
+        - template-video-manager.html
 ```
 
 **scroll-detect.directive.js** : diretiva que agrega eventos associados ao scroll de tela em um elemento. Com ela, é possível detectar se um elemento está visível ou não para o usuário.
@@ -67,6 +67,55 @@ videos
 
 **video-manager.directive.js** : diretiva responsável por reunir os elementos video-item em uma tela e coordenar o estado de visão daquele que estiver em execução de acordo com a detecção do scroll.
 
-**video-item.html** : estrutura html para suporte à diretiva **video-item.directive.js** na visualização do item de vídeo.
+**template-video-item.html** : estrutura html para suporte à diretiva **video-item.directive.js** na visualização do item de vídeo.
 
-**video-manager.html** : estrutura html para suporte à diretiva **video-manager.directive.js** na visualização do modal de vídeo, de acordo com deteção do scroll.
+**template-video-manager.html** : estrutura html para suporte à diretiva **video-manager.directive.js** na visualização do modal de vídeo, de acordo com deteção do scroll.
+
+```
+/**
+** video-item.directive.js
+**
+** @description diretiva que agrega eventos associados ao scroll de tela em um elemento. Com ela, é possível detectar se um elemento está visível ou não para o usuário
+**/
+(function(){
+'use strict';
+
+angular
+	.module('app.videos')
+	.directive('videoItem', videoItem);
+
+function videoItem() {
+
+	var ddo={
+		scope: {
+			video:'=video'
+		},
+		restrict:'E',
+		controller: VideoItemController,
+		replace: true,
+		templateUrl:'app/videos/views/template-video-item.html'
+	}
+
+	return ddo;
+
+	///
+
+	function VideoItemController($scope, $attrs) {
+
+		isPlaying = false;
+
+		$watch('click', function(change) {
+					if (isPlaying) {
+              $emit('video-item--play', $scope.video);
+          } else {
+              $emit('video-item--stop', $scope.video);
+          }
+
+          isPlaying = !isPlaying;
+		});
+	}
+
+  /// ... more code
+}
+})();
+```

@@ -4,7 +4,9 @@
 
 Modelar a arquitetura de um elemento de interface que execute vídeos, em uma página web. O elemento de interface deve reagir à alguns eventos provocados pelo usuário final, tal como o scroll da página web. Nos casos em que o usuário realize o scroll sobre a página e o elemento de vídeo, o qual ele tenha iniciado uma execução, saia da perspectiva de visão, esse deve ser fixado em algum quadrante da tela.
 
-[Figura 1 : Representação visual da proposta dos elementos de interface](images/fig1)
+[Figura 1 : Representação visual da proposta dos elementos de interface](images/fig1.png)
+
+[Figura 2 : Representação visual da gerência de vídeo em detecção de scroll](images/fig2.png)
 
 ## Formalização
 

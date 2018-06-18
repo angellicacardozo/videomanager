@@ -82,46 +82,34 @@ videos
  tela e coordenar o estado de visão daquele que estiver em execução de acordo
  com a detecção do scroll.
  **/
-
 (function() {
- 'use strict';
+    'use strict';
 
- angular
-  .module('app.videos')
-  .directive('videoManager', videoManager);
+    angular
+        .module('app.videos')
+        .directive('videoManager', videoManager);
 
- function videoManager() {
+    function videoManager() {
 
-  var ddo = {
-   scope: {
-    /// ...
-   },
-   restrict: 'E',
-   controller: VideoManagerController,
-   replace: true,
-   templateUrl: 'app/videos/views/template-video-manager.html'
-  }
+        var ddo = {
+            scope: {
+                /// ...
+            },
+            restrict: 'E',
+            controller: VideoManagerController,
+            replace: true,
+            templateUrl: 'app/videos/views/template-video-manager.html'
+        }
 
-  return ddo;
+        return ddo;
 
-  function VideoManagerController($scope, $attrs) {
-   $watch('video-item--added-on-page', function(video) {
-    // mapear videos adicionados em uma lista de execução
-   });
+        function VideoManagerController($scope, $attrs) {
+            // recebe os eventos referentes aos videos de sairam do campo de visao do usuario
+            // os exibe em view de gerenciamento
+        }
 
-
-   $watch('video-item--removed-from-page', function(video) {
-    // remover video da lista de execução
-   });
-
-
-   $watch('video-item--out-of-view', function(video) {
-    // carrega dados do video no template do manager
-   });
-  }
-
-  /// ... more code
- }
+        /// ... more code
+    }
 })();
 ```
 
@@ -134,56 +122,40 @@ videos
  ** @description diretiva que agrega eventos associados ao scroll de tela em um elemento.
  Com ela, é possível detectar se um elemento está visível ou não para o usuário
  **/
+(function() {
+    'use strict';
 
- (function() {
-  'use strict';
+    angular
+        .module('app.videos')
+        .directive('videoItem', videoItem);
 
-  angular
-   .module('app.videos')
-   .directive('videoItem', videoItem);
+    function videoItem() {
 
-  function videoItem() {
+        var ddo = {
+            scope: {
+                video: '=video'
+            },
+            restrict: 'E',
+            controller: VideoItemController,
+            replace: true,
+            templateUrl: 'app/videos/views/template-video-item.html'
+        }
 
-   var ddo = {
-    scope: {
-     video: '=video'
-    },
-    restrict: 'E',
-    controller: VideoItemController,
-    replace: true,
-    templateUrl: 'app/videos/views/template-video-item.html'
-   }
+        return ddo;
 
-   return ddo;
+        function VideoItemController($scope, $attrs) {
 
-   function VideoItemController($scope, $attrs) {
+            // controla eventos de play / pause / stop
 
-    isPlaying = false;
+        }
 
-    $emit('video-item--added-on-page', $scope.video);
+        function _onDetectedScroll(out_of_view) {
+            // emite evento ao gerenciador de video para que este exiba o vídeo fixado na tela
+        }
 
-    $watch('click', function(change) {
-     if (isPlaying) {
-      $emit('video-item--play', $scope.video);
-     } else {
-      $emit('video-item--stop', $scope.video);
-     }
-
-     isPlaying = !isPlaying;
-    });
-   }
-
-   function _onDetectedScroll(out_of_view) {
-
-    if (out_of_view) {
-     $emit('video-item--out-of-view', $scope.video);
+        /// ... more code
     }
-
-   }
-
-   /// ... more code
-  }
- })();
+})();
 ```
 
 **Scroll detect directive**
@@ -222,5 +194,3 @@ videos
     }
 })();
 ```
-
-Trabalho em progresso...

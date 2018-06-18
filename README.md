@@ -72,6 +72,9 @@ videos
 
 **template-video-manager.html** : estrutura html para suporte à diretiva **video-manager.directive.js** na visualização do modal de vídeo, de acordo com deteção do scroll.
 
+![](images/diagrama_01.png)
+###### Figura 3 - Visão geral dos componentes envolvidos na proposta com Angular
+
 **Video Manager Directive**
 
 ```
@@ -193,4 +196,53 @@ videos
         }
     }
 })();
+```
+### Abordagem em REACTJS
+###### Sugestão
+* ReactJS + Redux
+    * Utilização da biblioteca ReactJS em conjunto com Redux para manutenção de estados;
+    *  Utilização de Redux Saga, uma biblioteca (redux middleware), que visa cuidar, por exemplo, dos tratamentos assíncronos da aplicação, entre outras coisas. Com isso podemos obter um produto final que fique fácil de administrar dar manutenção, mais eficiente em sua execução, praticidade nos testes e melhor tratamento de erros;
+
+![](https://cdn-images-1.medium.com/max/800/1*BcmtHcMHN6PT7IniIWniHg.png)
+###### Figura 4 - Fluxo de dados React+Redux
+<br />
+
+### Exemplo de Arquitetura (Video Manager)
+```
+videoManager
+├── Components
+│   ├── VideoManager.jsx
+│   └── VideoManager.test.jsx
+├── Elements
+│   ├── VideoIcon.jsx
+│   └── VideoIcon.test.jsx
+├── VideoContainer.jsx
+├── VideoContainer.test.jsx
+└── module
+    ├── index.js
+    ├── routes.js
+    ├── selectors.js
+    └── videos.module.test.js
+```
+**Module**: Módulo - (index.js) - contém a maior parte do código Redux.
+Seletores são simples funções "get" usadas para selecionar dados do estado.
+Rotas contém as configurações dos módulos React-Router que são consumidas no alto nível da aplicação.
+
+**Container**: Classe com maior conhecimento, responsável por injetar todas as "props" do modulo, incluindo estado e criadores de ações. Qualquer lógica intermediária, como filtros, lógicas dos 'event handlers', ou lógica de construção, é feita nesse método.
+
+**Components**: Classes com pouco conhecimento ou funções com estados imutáveis que renderizam partes específicas da UI, baseado em props vindo do container.
+
+**Elements**: Funções com estados imutáveis e que são utilizadas para manter a apresentação sem redundâncias (DRY).
+
+**Tests**: Unidade de teste Jest que pertence a cada módulo.
+
+### Exemplo de Arquitetura (Single Video Widget)
+```
+Widgets
+   ├── Videos
+   │   ├── index.js
+   │   ├── components
+   │   ├── containers
+   └── └── modules
+
 ```

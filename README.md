@@ -246,3 +246,5 @@ Widgets
    └── └── modules
 
 ```
+#### Referências
+(Referências)[https://github.com/markerikson/react-redux-links/blob/master/react-architecture.md]

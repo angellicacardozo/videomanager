@@ -50,15 +50,16 @@ O diretório da aplicação deve ter uma estrutura similar a abaixo:
 
 ```
 utils
-    /directives
-        - scroll-detect.directive.js
+├── directives
+│   ├── scroll-detect.directive.js
+│
 videos
-    /directives
-        - video-item.directive.js
-        - video-manager.directive.js
-    /views
-        - template-video-item.html
-        - template-video-manager.html
+├── directives
+│   ├── video-item.directive.js
+│   ├── video-manager.directive.js
+├── views
+│   ├── template-video-item.html
+│   ├── template-video-manager.html
 ```
 
 **scroll-detect.directive.js** : diretiva que agrega eventos associados ao scroll de tela em um elemento. Com ela, é possível detectar se um elemento está visível ou não para o usuário.
@@ -75,49 +76,52 @@ videos
 
 ```
 /**
-** video-manager.directive.js
-**
-** @description diretiva responsável por reunir os elementos video-item em uma tela e coordenar o estado de visão daquele que estiver em execução de acordo com a detecção do scroll.
-**/
-(function(){
-'use strict';
+ ** video-manager.directive.js
+ **
+ ** @description diretiva responsável por reunir os elementos video-item em uma
+ tela e coordenar o estado de visão daquele que estiver em execução de acordo
+ com a detecção do scroll.
+ **/
 
-angular
-	.module('app.videos')
-	.directive('videoManager', videoManager);
+(function() {
+ 'use strict';
 
-function videoManager() {
+ angular
+  .module('app.videos')
+  .directive('videoManager', videoManager);
 
-	var ddo={
-		scope: {
-			/// ...
-		},
-		restrict:'E',
-		controller: VideoManagerController,
-		replace: true,
-		templateUrl:'app/videos/views/template-video-manager.html'
-	}
+ function videoManager() {
 
-	return ddo;
+  var ddo = {
+   scope: {
+    /// ...
+   },
+   restrict: 'E',
+   controller: VideoManagerController,
+   replace: true,
+   templateUrl: 'app/videos/views/template-video-manager.html'
+  }
 
-	///
+  return ddo;
 
-	function VideoManagerController($scope, $attrs) {
-		$watch('video-item--added-on-page', function(video) {
-				// mapear videos adicionados em uma lista de execução
-		});
+  function VideoManagerController($scope, $attrs) {
+   $watch('video-item--added-on-page', function(video) {
+    // mapear videos adicionados em uma lista de execução
+   });
 
-    $watch('video-item--removed-from-page', function(video) {
-				// remover video da lista de execução
-		});
 
-    $watch('video-item--out-of-view', function(video) {
-        // carrega dados do video no template do manager
-    });
-	}
+   $watch('video-item--removed-from-page', function(video) {
+    // remover video da lista de execução
+   });
+
+
+   $watch('video-item--out-of-view', function(video) {
+    // carrega dados do video no template do manager
+   });
+  }
 
   /// ... more code
-}
+ }
 })();
 ```
 
@@ -125,60 +129,98 @@ function videoManager() {
 
 ```
 /**
-** video-item.directive.js
-**
-** @description diretiva que agrega eventos associados ao scroll de tela em um elemento. Com ela, é possível detectar se um elemento está visível ou não para o usuário
-**/
-(function(){
-'use strict';
+ ** video - item.directive.js
+ **
+ ** @description diretiva que agrega eventos associados ao scroll de tela em um elemento.
+ Com ela, é possível detectar se um elemento está visível ou não para o usuário
+ **/
 
-angular
-	.module('app.videos')
-	.directive('videoItem', videoItem);
+ (function() {
+  'use strict';
 
-function videoItem() {
+  angular
+   .module('app.videos')
+   .directive('videoItem', videoItem);
 
-	var ddo={
-		scope: {
-			video:'=video'
-		},
-		restrict:'E',
-		controller: VideoItemController,
-		replace: true,
-		templateUrl:'app/videos/views/template-video-item.html'
-	}
+  function videoItem() {
 
-	return ddo;
+   var ddo = {
+    scope: {
+     video: '=video'
+    },
+    restrict: 'E',
+    controller: VideoItemController,
+    replace: true,
+    templateUrl: 'app/videos/views/template-video-item.html'
+   }
 
-	///
+   return ddo;
 
-	function VideoItemController($scope, $attrs) {
+   function VideoItemController($scope, $attrs) {
 
-		isPlaying = false;
+    isPlaying = false;
 
     $emit('video-item--added-on-page', $scope.video);
 
-		$watch('click', function(change) {
-					if (isPlaying) {
-							$emit('video-item--play', $scope.video);
-					} else {
-							$emit('video-item--stop', $scope.video);
-					}
+    $watch('click', function(change) {
+     if (isPlaying) {
+      $emit('video-item--play', $scope.video);
+     } else {
+      $emit('video-item--stop', $scope.video);
+     }
 
-					isPlaying = !isPlaying;
-		});
-	}
+     isPlaying = !isPlaying;
+    });
+   }
 
-	function _onDetectedScroll(out_of_view) {
+   function _onDetectedScroll(out_of_view) {
 
-		if (out_of_view) {
-      $emit('video-item--out-of-view', $scope.video);
-		}
+    if (out_of_view) {
+     $emit('video-item--out-of-view', $scope.video);
+    }
 
-	}
+   }
 
-  /// ... more code
-}
+   /// ... more code
+  }
+ })();
+```
+
+**Scroll detect directive**
+
+```
+/**
+ ** scroll-detect.directive.js
+ **
+ ** @description diretiva que agrega eventos associados ao scroll de tela em um elemento. Com ela, é possível detectar se um elemento está visível ou não para o usuário
+ **/
+(function() {
+    'use strict';
+
+    angular
+        .module('app.utils')
+        .directive('scrollDetect', scrollDetect);
+
+    function scrollDetect() {
+
+        var ddo = {
+            scope: {
+              onScroll: 'onScroll'
+            },
+            restrict: 'A',
+            link: scrollDetectLink
+        }
+
+        return ddo;
+
+        function scrollDetectLink(scope, element, attr) {
+            element.addEventListener('scroll', function(e) {
+                /// executa a chamada que o elemento que recebeu a diretiva atribuiu
+                $scope.onScroll(reachTop, reachBottom);
+            });
+        }
+    }
 })();
 ```
+
 Trabalho em progresso...
